@@ -3,7 +3,7 @@
 #+EMAIL: skgsergio@gmail.com
 #+DATE: Junio 2016
 #+STARTUP: showall
-#+OPTIONS: toc:1 num:nil timestamp:nil
+#+OPTIONS: toc:nil num:nil timestamp:nil
 #+OPTIONS: reveal_center:nil reveal_progress:t reveal_history:nil
 #+OPTIONS: reveal_control:t reveal_rolling_links:t reveal_keyboard:t
 #+OPTIONS: reveal_overview:t
@@ -13,9 +13,8 @@
 #+REVEAL_TRANS: linear
 #+REVEAL_SPEED: default
 #+REVEAL_THEME: black
-#+REVEAL_TITLE_SLIDE_TEMPLATE: <h1>%t</h1> <h2>%a</h2> <h2>%e</h2>
 
-* ~ $ whoami
+* sconde@acm ~ $ whoami
   - Sergio Conde Gómez
   - Investigador en Seguridad Informática @ UPM
   - Contacto:
@@ -23,6 +22,16 @@
     - Telegram: [[http://telegram.me/skgsergio][@skgsergio]]
     - Email: [[mailto:skgsergio@gmail.com][skgsergio@gmail.com]]
   - Quejas: /dev/null
+
+* ¿De que va esta charla?
+  - _Introducción_ al RE en Hardware
+    - ¿Qué busco en el HW?
+    - ¿Dónde lo busco?
+    - ¡Lo encontré! Pero no funciona :(
+    - ¡Estoy dentro! ¿Y ahora?
+  - Ejemplo práctico: /Router ONO CH6640E/CG6640E/
+    - ¿Cuál es la motivación?
+    - Demo
 
 * Webcam
   #+BEGIN_HTML
