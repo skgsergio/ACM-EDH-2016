@@ -1,0 +1,67 @@
+#+TITLE: Introducción al Hardware RE
+#+AUTHOR: Sergio Conde Gómez
+#+EMAIL: skgsergio@gmail.com
+#+DATE: Junio 2016
+#+STARTUP: showall
+#+OPTIONS: toc:1 num:nil timestamp:nil
+#+OPTIONS: reveal_center:nil reveal_progress:t reveal_history:nil
+#+OPTIONS: reveal_control:t reveal_rolling_links:t reveal_keyboard:t
+#+OPTIONS: reveal_overview:t
+#+REVEAL_MARGIN: 0.1
+#+REVEAL_MIN_SCALE: 0.5
+#+REVEAL_MAX_SCALE: 2.5
+#+REVEAL_TRANS: linear
+#+REVEAL_SPEED: default
+#+REVEAL_THEME: black
+#+REVEAL_TITLE_SLIDE_TEMPLATE: <h1>%t</h1> <h2>%a</h2> <h2>%e</h2>
+
+* ~ $ whoami
+  - Sergio Conde Gómez
+  - Investigador en Seguridad Informática @ UPM
+  - Contacto:
+    - Twitter: [[https://twitter.com/skgsergio][@skgsergio]]
+    - Telegram: [[http://telegram.me/skgsergio][@skgsergio]]
+    - Email: [[mailto:skgsergio@gmail.com][skgsergio@gmail.com]]
+  - Quejas: /dev/null
+
+* Webcam
+  #+BEGIN_HTML
+<div id="webcam">
+  <small><a id="wPlay" href="#">Play</a> - <a id="wStop" href="#">Stop</a></small>
+  <br />
+  <video id="wVideo" autoplay="true"></video>
+  <script>
+   navigator.getUserMedia = navigator.getUserMedia ||
+                            navigator.webkitGetUserMedia ||
+                            navigator.mozGetUserMedia ||
+                            navigator.msGetUserMedia ||
+                            navigator.oGetUserMedia;
+
+   if (navigator.getUserMedia) {
+     var wVideo = document.getElementById("wVideo");
+     var wPlay = document.getElementById("wPlay");
+     var wStop = document.getElementById("wStop");
+     var wStream;
+
+     wPlay.addEventListener("click", function(evt) {
+       navigator.getUserMedia(
+         { video: true, audio: false },
+         function(stream) {
+           wVideo.src = window.URL.createObjectURL(stream);
+           wStream = stream;
+         },
+         function(e) { alert("Webcam no inicializada."); }
+       );
+
+       evt.preventDefault()
+     });
+
+     wStop.addEventListener("click", function(evt) {
+       wStream.getTracks()[0].stop();
+
+       evt.preventDefault()
+     });
+   }
+  </script>
+</div>
+  #+END_HTML
