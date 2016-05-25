@@ -131,9 +131,17 @@
     * Estaba empeñado en sacar los datos del SIP de VoIP... pero ya no soy
       cliente de ONO.
   * Charla del /23c3/ muy recomendada donde con el mismo router una vez ha
-    conseguido acceso explora *mas allá del router*: https://media.ccc.de/v/32c3-7133-beyond_your_cable_modem
+    conseguido acceso explora *mas allá del cable-router*:
+    https://media.ccc.de/v/32c3-7133-beyond_your_cable_modem
 
 * Un vistazo al hardware
+  [[./img/router_general.jpg]]
+
+*** Realtek RTL8198: Router
+   [[./img/router_rtl.jpg]]
+
+*** Intel DNCE2500GU: Modem DOCSIS 3.0
+   [[./img/router_i.jpg]]
 
 * Demo en vivo
   #+BEGIN_HTML
@@ -202,3 +210,11 @@
   * Quejas: /dev/null
 
   ¡Muchas gracias a todos!
+
+** Agradecimientos especiales
+   * A Sergio G. por tocar las narices para que investigásemos el router.
+   * A ONO por darme esta oportunidad al tocarme las narices.
+   * Y una mención especial a la persona que me ha soldado los cables para
+     facilitarme la vida:
+
+   [[./img/vikingo.png]]

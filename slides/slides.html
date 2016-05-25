@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<title>Introducción al Embedded Device Hacking</title>
+<meta name="author" content="(Sergio Conde Gómez)"/>
+<style type="text/css">
+.underline { text-decoration: underline; }
+</style>
+<link rel="stylesheet" href="./reveal.js/css/reveal.css"/>
+
+<link rel="stylesheet" href="./reveal.js/css/theme/black.css" id="theme"/>
+
+
+<!-- If the query includes 'print-pdf', include the PDF print sheet -->
+<script>
+    if( window.location.search.match( /print-pdf/gi ) ) {
+        var link = document.createElement( 'link' );
+        link.rel = 'stylesheet';
+        link.type = 'text/css';
+        link.href = './reveal.js/css/print/pdf.css';
+        document.getElementsByTagName( 'head' )[0].appendChild( link );
+    }
+</script>
+</head>
+<body>
+<div class="reveal">
+<div class="slides">
+<section id="sec-title-slide"><h1 class="title">Introducción al Embedded Device Hacking</h1><h2 class="author">Sergio Conde Gómez</h2><h2 class="date">Mayo 2016</h2>
+</section>
+<style>
+  .reveal section img { border: 0; box-shadow: none; background: none; }
+</style>
+
+<section>
+<section id="slide-orgheadline1">
+<h2 id="orgheadline1">sconde@acm ~ $ whoami</h2>
+<ul>
+<li>Sergio Conde Gómez</li>
+<li>Investigador en Seguridad Informática @ CriptoLab, UPM</li>
+<li>Contacto:
+<ul>
+<li>Twitter: <a href="https://twitter.com/skgsergio">@skgsergio</a></li>
+<li>Telegram: <a href="http://telegram.me/skgsergio">@skgsergio</a></li>
+<li>Email: <a href="mailto:skgsergio@gmail.com">skgsergio@gmail.com</a></li>
+
+</ul></li>
+<li>Quejas: /dev/null</li>
+
+</ul>
+
+
+<div class="figure">
+<p><img src="./img/logo_acm.png" alt="logo_acm.png" height="150px" />
+</p>
+</div>
+
+</section>
+</section>
+<section>
+<section id="slide-orgheadline2">
+<h2 id="orgheadline2">¿De que va esta charla?</h2>
+<ul>
+<li><span class="underline">Introducción</span> al Embedded Device Hacking
+<ul>
+<li>WHAT!?</li>
+<li>¿Cómo podemos enfrentarnos a ello?
+<ul>
+<li>Software</li>
+<li>Hardware</li>
+
+</ul></li>
+<li>Vamos a por el hardware</li>
+
+</ul></li>
+<li>Ejemplo práctico: <i>Router ONO CH6640E</i>
+<ul>
+<li>¿Qué tiene de interesante?</li>
+<li>Echando un vistazo al hardware</li>
+<li>Demo en vivo</li>
+
+</ul></li>
+
+</ul>
+
+</section>
+</section>
+<section>
+<section id="slide-orgheadline3">
+<h2 id="orgheadline3">WHAT!?</h2>
+<p>
+<i>Embedded device hacking is the exploiting of vulnerabilities in embedded
+software (or hardware) to gain control of the device.</i>
+</p>
+
+<p>
+Básicamente&#x2026; tenemos un hardware que sabemos que ejecuta un sistema
+operativo con la finalidad de hacer <i>algo</i> mediante un software y queremos
+hacernos con el control del hardware y/o software.
+</p>
+
+<p>
+<b>Ejemplo:</b> Conseguir super-administración del router.
+</p>
+
+</section>
+</section>
+<section>
+<section id="slide-orgheadline11">
+<h2 id="orgheadline11">¿Cómo podemos enfrentarnos a ello?</h2>
+<p>
+Principalmente tenemos dos caminos:
+</p>
+
+<ul>
+<li><b>Software:</b> Interactuar con el software en busca de fallos que nos permitan
+controlarlo.</li>
+<li><b>Hardware:</b> Inspeccionar el hardware buscando poder <i>conectarnos</i> a el y
+decirle que queremos hacer.</li>
+
+</ul>
+
+</section>
+<section id="slide-orgheadline4">
+<h3 id="orgheadline4">Software</h3>
+<ul>
+<li>Lo típico: 0-day, RCE, &#x2026;</li>
+<li>Si tiene una interfaz web:
+<ul>
+<li>Inspeccionar el <code>JavaScript</code> del cliente</li>
+<li>root/root, root/1234, root/12345, root/toor, admin/admin,
+admin/nombre-de-la-empresa, &#x2026;</li>
+
+</ul></li>
+<li>Analizar el tráfico de red:
+<ul>
+<li>¿SSL/TLS?</li>
+<li>Llamadas a API ⇒ <i>¿MitM?</i></li>
+<li>Llamadas a <i>casa</i> ⇒ <i>¿MitM?</i></li>
+
+</ul></li>
+<li>Cargar firmware modificado</li>
+
+</ul>
+
+<p>
+Este no es el camino que hemos elegido hoy.
+</p>
+
+</section>
+<section id="slide-orgheadline5">
+<h3 id="orgheadline5">Hardware (I)</h3>
+<p>
+Hay que identificar chips y ver que podemos hacer con ellos.
+</p>
+<ul>
+<li>EEPROM (Serie, I2C, &#x2026;): Leer con pinzas.</li>
+<li>NAND Flash: Lo anterior, pero más lío de cableado.</li>
+<li>CPU
+<ul>
+<li>TTL UART: Usada para generalmente para debug (salida de mensajes del
+bootloader y dmesg del kernel) pero con un poco de suerte nos dará acceso
+a un login, panel de configuración o, en ocasiones, incluso podremos
+manipular el bootloader o tener acceso a una shell.</li>
+
+</ul></li>
+
+</ul>
+
+</section>
+<section id="slide-orgheadline10">
+<h3 id="orgheadline10">Hardware (II)</h3>
+<ul>
+<li>CPU
+<ul>
+<li>JTAG: Puerto de debug común en los sistemas embebidos, generalmente se usa
+para test en el proceso de fabricación. Depende mucho de del SoC/CPU su
+utilidad y generalmente es un puerto de programación del mismo. En
+consolas y móviles ha sido muy útil&#x2026;</li>
+
+<li>USB: Y si conectamos un teclado ¿que pasará?</li>
+
+</ul></li>
+
+</ul>
+
+</section>
+<section id="slide-orgheadline6">
+<h4 id="orgheadline6">(I) EEPROM</h4>
+<p>
+<img src="./img/eeprom_i2c.png" alt="eeprom_i2c.png" />
+<img src="./img/eeprom_clip.jpg" alt="eeprom_clip.jpg" />
+</p>
+
+</section>
+<section id="slide-orgheadline7">
+<h4 id="orgheadline7">(II) NAND</h4>
+<p>
+<img src="./img/nand_flash.png" alt="nand_flash.png" />
+<img src="./img/nand_clip.jpg" alt="nand_clip.jpg" />
+</p>
+
+</section>
+<section id="slide-orgheadline8">
+<h4 id="orgheadline8">(III) CPU: TTL UART</h4>
+<ul>
+<li>Típicamente: 4 pines</li>
+
+</ul>
+<p>
+<img src="./img/serial_1.jpg" alt="serial_1.jpg" />
+<img src="./img/serial_2.jpg" alt="serial_2.jpg" />
+</p>
+
+</section>
+<section id="slide-orgheadline9">
+<h4 id="orgheadline9">(IV) CPU: JTAG</h4>
+<ul>
+<li>Típicamente: 8, 10, 12, 14 o 16 pines</li>
+
+</ul>
+
+<div class="figure">
+<p><img src="./img/xbox_jtag.jpg" alt="xbox_jtag.jpg" />
+</p>
+</div>
+
+</section>
+</section>
+<section>
+<section id="slide-orgheadline12">
+<h2 id="orgheadline12">Vamos a por el hardware</h2>
+<p>
+¿Y ahora qué? Pues esta es lista de prioridades:
+</p>
+
+<ol>
+<li>Buscar una conexión <b>TTL UART</b> en la placa o en el datasheet.</li>
+<li>Buscar un JTAG.</li>
+<li>Leer las EEPROM.</li>
+<li>Leer las NAND.</li>
+
+</ol>
+
+<p>
+Generalmente si en <b>1</b> o <b>2</b> consigues una shell no necesitas hacer <b>3</b> y <b>4</b>
+ya que podrás acceder desde ella.
+</p>
+
+</section>
+</section>
+<section>
+<section id="slide-orgheadline13">
+<h2 id="orgheadline13"><i>Router ONO CH6640E</i></h2>
+<ul>
+<li>¿Qué tiene de interesante?
+<ul>
+<li>El funcionamiento del protocolo <i>DOCSIS</i> hace que un compañero y yo nos
+interesemos en él.</li>
+<li>Tenemos acceso a uno sin dejar una casa sin internet.</li>
+<li>Estaba empeñado en sacar los datos del SIP de VoIP&#x2026; pero ya no soy
+cliente de ONO.</li>
+
+</ul></li>
+<li>Charla del <i>23c3</i> muy recomendada donde con el mismo router una vez ha
+conseguido acceso explora <b>mas allá del cable-router</b>:
+<a href="https://media.ccc.de/v/32c3-7133-beyond_your_cable_modem">https://media.ccc.de/v/32c3-7133-beyond_your_cable_modem</a></li>
+
+</ul>
+
+</section>
+</section>
+<section>
+<section id="slide-orgheadline16">
+<h2 id="orgheadline16">Un vistazo al hardware</h2>
+
+<div class="figure">
+<p><img src="./img/router_general.jpg" alt="router_general.jpg" />
+</p>
+</div>
+
+</section>
+<section id="slide-orgheadline14">
+<h4 id="orgheadline14">Realtek RTL8198: Router</h4>
+
+<div class="figure">
+<p><img src="./img/router_rtl.jpg" alt="router_rtl.jpg" />
+</p>
+</div>
+
+</section>
+<section id="slide-orgheadline15">
+<h4 id="orgheadline15">Intel DNCE2500GU: Modem DOCSIS 3.0</h4>
+
+<div class="figure">
+<p><img src="./img/router_i.jpg" alt="router_i.jpg" />
+</p>
+</div>
+
+</section>
+</section>
+<section>
+<section id="slide-orgheadline17">
+<h2 id="orgheadline17">Demo en vivo</h2>
+<div id="webcam">
+  <div id=wBtn>
+    <a id="wPlay" href="#">▶</a> <a id="wStop" href="#">⏹</a>
+  </div>
+  <video id="wVideo" autoplay="true"></video>
+  <script>
+   navigator.getUserMedia = navigator.getUserMedia ||
+                            navigator.webkitGetUserMedia ||
+                            navigator.mozGetUserMedia ||
+                            navigator.msGetUserMedia ||
+                            navigator.oGetUserMedia;
+
+   if (navigator.getUserMedia) {
+     var wVideo = document.getElementById("wVideo");
+     var wPlay = document.getElementById("wPlay");
+     var wStop = document.getElementById("wStop");
+     var wStream;
+
+     wStop.style.display = "none";
+
+     wPlay.addEventListener("click", function(evt) {
+       navigator.getUserMedia(
+         { video: true, audio: false },
+         function(stream) {
+           wVideo.src = window.URL.createObjectURL(stream);
+           wStream = stream;
+         },
+         function(e) { alert("Webcam no inicializada."); }
+       );
+
+       wPlay.style.display = "none";
+       wStop.style.display = "";
+
+       evt.preventDefault()
+     });
+
+     wStop.addEventListener("click", function(evt) {
+       wVideo.src = "";
+       if (typeof wStream !== "undefined") {
+         wStream.getTracks()[0].stop();
+       }
+
+       wStop.style.display = "none";
+       wPlay.style.display = "";
+
+       evt.preventDefault()
+     });
+   }
+  </script>
+</div>
+
+</section>
+</section>
+<section>
+<section id="slide-orgheadline19">
+<h2 id="orgheadline19">FIN</h2>
+<p>
+¿Dudas, ruegos o preguntas?
+</p>
+
+<ul>
+<li>Slides y recursos:
+<ul>
+<li><a href="https://github.com/skgsergio/ACM-EDH-2016">https://github.com/skgsergio/ACM-EDH-2016</a></li>
+<li>O&#x2026; <a href="https://git.io/vrVfc">https://git.io/vrVfc</a></li>
+
+</ul></li>
+<li>Contacto:
+<ul>
+<li>Twitter: <a href="https://twitter.com/skgsergio">@skgsergio</a></li>
+<li>Telegram: <a href="http://telegram.me/skgsergio">@skgsergio</a></li>
+<li>Email: <a href="mailto:skgsergio@gmail.com">skgsergio@gmail.com</a></li>
+
+</ul></li>
+<li>Quejas: /dev/null</li>
+
+</ul>
+
+<p>
+¡Muchas gracias a todos!
+</p>
+
+</section>
+<section id="slide-orgheadline18">
+<h3 id="orgheadline18">Agradecimientos especiales</h3>
+<ul>
+<li>A Sergio G. por tocar las narices para que investigásemos el router.</li>
+<li>A ONO por darme esta oportunidad al tocarme las narices.</li>
+<li>Y una mención especial a la persona que me ha soldado los cables para
+facilitarme la vida:</li>
+
+</ul>
+
+
+<div class="figure">
+<p><img src="./img/vikingo.png" alt="vikingo.png" />
+</p>
+</div>
+</section>
+</section>
+</div>
+</div>
+<script src="./reveal.js/lib/js/head.min.js"></script>
+<script src="./reveal.js/js/reveal.js"></script>
+
+<script>
+// Full list of configuration options available here:
+// https://github.com/hakimel/reveal.js#configuration
+Reveal.initialize({
+
+controls: true,
+progress: true,
+history: true,
+center: false,
+slideNumber: 'c',
+rollingLinks: false,
+keyboard: true,
+overview: true,
+margin: 0.10,
+minScale: 0.50,
+maxScale: 2.50,
+
+theme: Reveal.getQueryHash().theme, // available themes are in /css/theme
+transition: Reveal.getQueryHash().transition || 'linear', // default/cube/page/concave/zoom/linear/fade/none
+transitionSpeed: 'default',
+multiplex: {
+    secret: '', // null if client
+    id: '', // id, obtained from socket.io server
+    url: '' // Location of socket.io server
+},
+
+// Optional libraries used to extend on reveal.js
+dependencies: [
+ { src: './reveal.js/lib/js/classList.js', condition: function() { return !document.body.classList; } },
+ { src: './reveal.js/plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+ { src: './reveal.js/plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+ { src: './reveal.js/plugin/zoom-js/zoom.js', async: true, condition: function() { return !!document.body.classList; } },
+ { src: './reveal.js/plugin/notes/notes.js', async: true, condition: function() { return !!document.body.classList; } }]
+});
+</script>
+</body>
+</html>
