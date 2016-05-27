@@ -143,13 +143,14 @@
 *** Intel DNCE2500GU: Modem DOCSIS 3.0
    [[./img/router_i.jpg]]
 
-* Demo en vivo
+*** Manos a la obra
   #+BEGIN_HTML
 <div id="webcam">
-  <div id=wBtn>
+  <div id="wBtn" style="font-size: small;">
     <a id="wPlay" href="#">▶</a> <a id="wStop" href="#">⏹</a>
   </div>
-  <video id="wVideo" autoplay="true"></video>
+  <video style="max-width: 100%; max-height: 100%;" id="wVideo" autoplay="true">
+  </video>
   <script>
    navigator.getUserMedia = navigator.getUserMedia ||
                             navigator.webkitGetUserMedia ||
@@ -167,7 +168,14 @@
 
      wPlay.addEventListener("click", function(evt) {
        navigator.getUserMedia(
-         { video: true, audio: false },
+         {
+           video: {
+             "width": "1280",
+             "height": "720",
+             "aspectRatio": 16/9
+           },
+           audio: false
+         },
          function(stream) {
            wVideo.src = window.URL.createObjectURL(stream);
            wStream = stream;
