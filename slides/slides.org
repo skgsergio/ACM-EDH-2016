@@ -116,9 +116,9 @@
   ¿Y ahora qué? Pues esta es lista de prioridades:
 
   1. Buscar una conexión *TTL UART* en la placa o en el datasheet.
-  2. Buscar un JTAG.
-  3. Leer las EEPROM.
-  4. Leer las NAND.
+  2. Buscar un *JTAG*.
+  3. Leer las *EEPROM*.
+  4. Leer las *NAND*.
 
   Generalmente si en *1* o *2* consigues una shell no necesitas hacer *3* y *4*
   ya que podrás acceder desde ella.
