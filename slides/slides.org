@@ -32,7 +32,7 @@
   #+ATTR_HTML: :height 150px
   [[./img/logo_acm.png]]
 
-* ¿De que va esta charla?
+* ¿De qué va esta charla?
   * _Introducción_ al Embedded Device Hacking
     * WHAT!?
     * ¿Cómo podemos enfrentarnos a ello?
@@ -217,11 +217,11 @@
     * Email: [[mailto:skgsergio@gmail.com][skgsergio@gmail.com]]
   * Quejas: /dev/null
 
-  ¡Muchas gracias a todos!
+  ¡Muchas gracias a todos por venir!
 
 ** Agradecimientos especiales
+   * +A ONO por tocarme las narices y prestarme el router.+
    * A Sergio G. por tocar las narices para que investigásemos el router.
-   * A ONO por darme esta oportunidad al tocarme las narices.
    * Y una mención especial a la persona que me ha soldado los cables para
      facilitarme la vida:
 
